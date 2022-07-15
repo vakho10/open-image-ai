@@ -1,2 +1,2 @@
-# open-image-ai
+# Open Image AI
 Java library that uses free AI image processing APIs to upscale, cartoonize, remove background and etc
