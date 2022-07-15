@@ -44,7 +44,7 @@ public class ImgLarger implements Callable<Path> {
 
     public String postUrl = "https://access2.imglarger.com:8999/upload";
     public String statusUrl = "https://access2.imglarger.com:8999/status/{identifier}";
-    public String RESULT_URL = "http://access2.imglarger.com:8889/results/{identifier}_{scale}x.jpg";
+    public String resultUrl = "http://access2.imglarger.com:8889/results/{identifier}_{scale}x.jpg";
 
     private Path inputImage;
     private Path outputImage;
@@ -71,8 +71,7 @@ public class ImgLarger implements Callable<Path> {
     }
 
     @Override
-    public Path call() {
-        long start = System.currentTimeMillis();
+    public Path call() throws IOException {
         // (1) Upload image
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
@@ -81,12 +80,7 @@ public class ImgLarger implements Callable<Path> {
         body.add("Alg", "slow"); // This parameter has no effect, but the request still had it ¯\_(ツ)_/¯
         body.add("scaleRadio", scale.getValue());
 
-        byte[] imageBytes;
-        try {
-            imageBytes = Files.readAllBytes(inputImage);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        byte[] imageBytes = Files.readAllBytes(inputImage);
 
         body.add("myfile", new ByteArrayResource(imageBytes) {
             @Override
@@ -110,15 +104,10 @@ public class ImgLarger implements Callable<Path> {
 
         // (3) Download image
         ResponseEntity<byte[]> resultResponse = REST_TEMPLATE.exchange(
-                RESULT_URL, HttpMethod.GET, null, byte[].class, identifier, scale.getValue());
-        Path downloadedFile;
-        try {
-            downloadedFile = Files.write(outputImage, resultResponse.getBody());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        long stop = System.currentTimeMillis() - start;
-        System.out.printf("%s]: Identifier file: %s downloaded at: %s, in %f seconds\n", inputImage.getFileName(), identifier, downloadedFile, stop / 1000f);
+                resultUrl, HttpMethod.GET, null, byte[].class, identifier, scale.getValue());
+        Path downloadedFile = Files.write(outputImage, resultResponse.getBody());
+
+        System.out.printf("%s]: Identifier file: %s downloaded at: %s\n", inputImage.getFileName(), identifier, downloadedFile);
         return downloadedFile;
     }
 

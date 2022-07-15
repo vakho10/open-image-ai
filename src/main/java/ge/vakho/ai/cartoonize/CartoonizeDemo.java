@@ -1,4 +1,7 @@
-package ge.vakho.ai.imglarger;
+package ge.vakho.ai.cartoonize;
+
+import ge.vakho.ai.imglarger.ImgLarger;
+import ge.vakho.ai.imglarger.Scale;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -9,7 +12,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
-public class ImgLargerDemo {
+public class CartoonizeDemo {
 
     public static void main(String[] args) throws IOException {
         Path srcPath = Paths.get("F:/data_src");
@@ -37,10 +40,9 @@ public class ImgLargerDemo {
                 // (2) Wrap in background remover class
                 .map(inputImage -> {
                     final String filename = inputImage.getFileName().toString();
-                    return new ImgLarger(
+                    return new Cartoonize(
                             inputImage,
-                            dstPath.resolve(filename.substring(0, filename.lastIndexOf(".")).concat(".jpg")),
-                            Scale.X2);
+                            dstPath.resolve(filename.substring(0, filename.lastIndexOf(".")).concat(".jpg")));
                 })
                 // (3) Execute tasks
                 .forEach(executorService::submit);
