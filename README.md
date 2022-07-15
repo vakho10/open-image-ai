@@ -2,4 +2,8 @@
 Java library that uses free AI image processing APIs to upscale, cartoonize, remove background and etc
 
 ## ImgLarger
-ImgLarger class uses [imglarger](https://imglarger.com/)'s API to increase the size of an image (2 times, 4 times or even 8 times).
+ImgLarger class uses [imglarger](https://imglarger.com/) API to increase the size of an image (2 times, 4 times or even 8 times).
+
+## ImgLarger
+Cartoonize class uses [cartoonize](https://cartoonize-lkqov62dia-de.a.run.app/cartoonize) API to turn images into cartoon ones. Pretty fun to use 
+and to be frank the results are quite good too.
