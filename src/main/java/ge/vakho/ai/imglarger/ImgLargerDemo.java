@@ -27,13 +27,14 @@ public class ImgLargerDemo {
                 .filter(Files::isRegularFile)
                 .map(Path::getFileName)
                 .map(Path::toString)
+                .map(filename -> filename.substring(0, filename.lastIndexOf(".")))
                 .collect(Collectors.toList());
 
         Files.walk(srcPath)
                 // (1) Grab all images from folder
                 .filter(Files::isRegularFile)
                 // ! Ignore previously processes files !
-                .filter(file -> !processedFiles.contains(file.getFileName().toString()))
+                .filter(file -> !processedFiles.contains(file.getFileName().toString().substring(0, file.getFileName().toString().lastIndexOf("."))))
                 // (2) Wrap in background remover class
                 .map(inputImage -> {
                     final String filename = inputImage.getFileName().toString();
