@@ -1,4 +1,4 @@
-package ge.vakho.ai.anime16k;
+package ge.vakho.ai.bgeraser;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -9,7 +9,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
-public class Anime16KDemo {
+public class BgEraserDemo {
 
     public static void main(String[] args) throws IOException {
         Path srcPath = Paths.get("F:/data_src");
@@ -38,9 +38,10 @@ public class Anime16KDemo {
                 // (2) Wrap in class
                 .map(inputImage -> {
                     final String filename = inputImage.getFileName().toString();
-                    return new Anime16K(
+                    return new BgEraser(
                             inputImage,
-                            dstPath.resolve(filename.substring(0, filename.lastIndexOf(".")).concat(".jpg")));
+                            dstPath.resolve(filename.substring(0, filename.lastIndexOf(".")).concat(".jpg"))
+                    );
                 })
                 // (3) Execute tasks
                 .forEach(executorService::submit);

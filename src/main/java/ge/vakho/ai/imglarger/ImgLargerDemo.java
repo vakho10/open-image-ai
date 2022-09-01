@@ -35,7 +35,7 @@ public class ImgLargerDemo {
                 .filter(Files::isRegularFile)
                 // ! Ignore previously processes files !
                 .filter(file -> !processedFiles.contains(file.getFileName().toString().substring(0, file.getFileName().toString().lastIndexOf("."))))
-                // (2) Wrap in background remover class
+                // (2) Wrap in class
                 .map(inputImage -> {
                     final String filename = inputImage.getFileName().toString();
                     return new ImgLarger(
